@@ -114,6 +114,7 @@ class HashMap {
   // Return number of stored keys in hash map
   length() {
     let keys = 0;
+    
     for (let i = 0; i < this.capacity; i++) {
       let current = this.hashTable[i];
       while (current !== undefined && current !== null) {
@@ -122,5 +123,31 @@ class HashMap {
       }
     }
     return keys;
+  }
+  // Returns an array containing all the keys inside the hash map
+  keys() {
+    let container = [];
+
+    for (let i = 0; i < this.capacity; i++) {
+      let current = this.hashTable[i];
+      while (current !== undefined && current !== null) {
+        container.push(current.key);
+        current = current.next
+      }
+    }
+    return container;
+  }
+  // Returns an array containing all the values inside the hash map
+  values() {
+    let container = [];
+
+    for (let i = 0; i < this.capacity; i++) {
+      let current = this.hashTable[i];
+      while (current !== undefined && current !== null) {
+        container.push(current.data);
+        current = current.next
+      }
+    }
+    return container;
   }
 }
