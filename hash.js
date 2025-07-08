@@ -81,17 +81,44 @@ class HashMap {
     }
     return false;
   }
+  // Removes value based on key
+  remove(key) {
+    let idx = this.hash(key);
+    let current = this.hashTable[idx];
+    let previous = null;
+
+    if (current === undefined) {
+      return false;
+    }
+    while (current !== null) {
+      if (current.key === key) {
+        if (previous === null) {
+          this.hashTable[idx] = current.next;
+          if (this.hashTable[idx] === null) {
+            this.buckets--;
+          }
+          return true;
+        } else {
+          previous.next = current.next
+          if (this.hashTable[idx] === null) {
+            this.buckets--;
+          }
+          return true;
+        }
+      }
+      previous = current;
+      current = current.next;
+    }
+    return false;
+  }
 }
 
 let test = new HashMap();
 
 test.set('0', 'Doggy');
 test.set('1', 'Kitty');
-test.set('0', 'Cat');
-test.set('0', 'mouse');
-test.set('12', 'elephant');
-test.set('23', 'egg');
-test.set('34', 'boy');
 
-console.log(test.has('23'));
+
+console.log(test.remove('1'));
+console.log(test.hashTable);
 
