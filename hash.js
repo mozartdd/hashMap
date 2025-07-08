@@ -111,14 +111,16 @@ class HashMap {
     }
     return false;
   }
+  // Return number of stored keys in hash map
+  length() {
+    let keys = 0;
+    for (let i = 0; i < this.capacity; i++) {
+      let current = this.hashTable[i];
+      while (current !== undefined && current !== null) {
+        keys++;
+        current = current.next;
+      }
+    }
+    return keys;
+  }
 }
-
-let test = new HashMap();
-
-test.set('0', 'Doggy');
-test.set('1', 'Kitty');
-
-
-console.log(test.remove('1'));
-console.log(test.hashTable);
-
