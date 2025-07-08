@@ -22,6 +22,7 @@ class HashMap {
     // Turns user input to valid hash table idx
     let idx = this.hash(key);
     let current = this.hashTable[idx];
+
     if (typeof key !== 'string') {
       return 'Please enter valid string type key.';
    }  else if (current === undefined) {
@@ -29,6 +30,7 @@ class HashMap {
       // Increase filled bucket count
       this.buckets++;
     } else { // If hash table bucket is not empty
+
       while (current !== null) {
         if (current.key === key) {
           current.data = value;
@@ -45,19 +47,39 @@ class HashMap {
     }
     return this.hashTable;
   }
+  // Returns value assigned to key
   get(key) {
     let idx = this.hash(key);
-    let result = [];
-    while (this.hashTable[idx] !== null) {
-      if (this.hashTable[idx].key === key) {
-        result.push(this.hashTable[idx].data);
-      }
-      this.hashTable[idx] = this.hashTable[idx].next;
-    }
-    if (result == false) {
+    let current = this.hashTable[idx];
+    
+    // If bucket is empty return null
+    if (current === undefined) {
       return null;
     }
-    return result;
+    // While hasn't reached end of linked list of bucket
+    while (current !== null) {
+      if (current.key === key) {
+        return current.data;
+      }
+      current = current.next;
+    }
+    return null;
+  }
+  // Takes key as argument and return true or false based on if key is in hash map
+  has(key) {
+    let idx = this.hash(key);
+    let current = this.hashTable[idx];
+
+    if (current === undefined) {
+      return null;
+    }
+    while (current !== null) {
+      if (current.key === key) {
+        return true;
+      }
+      current = current.next;
+    }
+    return false;
   }
 }
 
@@ -71,5 +93,5 @@ test.set('12', 'elephant');
 test.set('23', 'egg');
 test.set('34', 'boy');
 
-console.log(test.buckets);
+console.log(test.has('23'));
 
