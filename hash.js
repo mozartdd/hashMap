@@ -2,6 +2,7 @@ class HashMap {
   constructor(capacity = 16, loadFactor = 0.8) {
     this.capacity = capacity;
     this.loadFactor = loadFactor;
+    this.buckets = 0;
     this.hashTable = [];
   }
   // Produces a hash key/idx based on user input
@@ -16,17 +17,47 @@ class HashMap {
    }
    return hashCode;
   }
-  // Sets default key value to hash function's outcome
-  set(key = this.hash(key), value) {
-    let tempHome = [];
-
-    if (this.hashTable[key] !== undefined) {
-      tempHome[0] = this.hashTable[key];
-      this.hashTable[key] = {data: value, next: tempHome[0]}
-    } else {
-      this.hashTable[key] = {data: value, next: null};
+  // Adds key: value pair to hash table, at appropriate bucket idx
+  set(key, value) {
+    // Turns user input to valid hash table idx
+    let idx = this.hash(key);
+    let current = this.hashTable[idx];
+    if (typeof key !== 'string') {
+      return 'Please enter valid string type key.';
+   }  else if (current === undefined) {
+      this.hashTable[idx] = {key: key, data: value, next: null};
+      // Increase filled bucket count
+      this.buckets++;
+    } else { // If hash table bucket is not empty
+      while (current !== null) {
+        if (current.key === key) {
+          current.data = value;
+        } else if (current.next === null) { // If next link is last
+          // Set lists head to be current variable and set it's pointer to current list's head
+          current.next = {key: key, data: value, next: null};
+        }
+        current = current.next;
+      }
     }
-    return this.hashTable[key];
+    // If loadFactor is exceeded increase capacity by two
+    if (this.loadFactor <= this.buckets / this.capacity) {
+      this.capacity *= 2;
+    }
+    return this.hashTable;
+  }
+  get(key) {
+    let idx = this.hash(key);
+    let result = [];
+    while (this.hashTable[idx] !== null) {
+      if (this.hashTable[idx].key === key) {
+        result.push(this.hashTable[idx].data);
+      }
+      this.hashTable[idx] = this.hashTable[idx].next;
+    }
+    if (result == false) {
+      return null;
+    }
+    return result;
   }
 }
 
@@ -34,7 +65,11 @@ let test = new HashMap();
 
 test.set('0', 'Doggy');
 test.set('1', 'Kitty');
-test.set('1', 'Frog');
-test.set('1', 'Bee');
+test.set('0', 'Cat');
+test.set('0', 'mouse');
+test.set('12', 'elephant');
+test.set('23', 'egg');
+test.set('34', 'boy');
 
-console.log(test.hashTable[1]);
+console.log(test.buckets);
+
