@@ -1,5 +1,6 @@
 export class HashMap {
   constructor(capacity = 16, loadFactor = 0.75) {
+    this.initialCapacity = capacity;
     this.capacity = capacity;
     this.loadFactor = loadFactor;
     this.buckets = 0;
@@ -138,7 +139,7 @@ export class HashMap {
   clear() {
     this.hashTable = [];
     this.buckets = 0;
-    this.capacity = 16;
+    this.capacity = this.initialCapacity;
   }
   // Returns an array containing all the keys inside the hash map
   keys() {
