@@ -124,6 +124,12 @@ class HashMap {
     }
     return keys;
   }
+  // Removes all entries from hash table
+  clear() {
+    this.hashTable = [];
+    this.buckets = 0;
+    this.capacity = 16;
+  }
   // Returns an array containing all the keys inside the hash map
   keys() {
     let container = [];
@@ -151,3 +157,27 @@ class HashMap {
     return container;
   }
 }
+
+let testHash = new HashMap();
+
+testHash.set('0', 'Orc');
+testHash.set('1', 'Elf');
+testHash.set('2', 'Human');
+testHash.set('3', 'Dwarf');
+testHash.set('4', 'Goblin');
+testHash.set('5', 'Troll');
+testHash.set('6', 'Vampire');
+testHash.set('7', 'Werewolf');
+testHash.set('8', 'Gnome');
+testHash.set('9', 'Fairy');
+
+testHash.clear();
+
+testHash.set('5', 'Troll');
+testHash.set('6', 'Vampire');
+testHash.set('7', 'Werewolf');
+testHash.set('8', 'Gnome');
+testHash.set('9', 'Fairy');
+
+console.log(testHash.hashTable);
+
