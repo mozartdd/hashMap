@@ -1,0 +1,43 @@
+import { HashMap } from "./hash.js";
+
+let test = new HashMap();
+
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+test.set('moon', 'silver');
+test.set('eggs', 'beige');
+test.set('sun', 'amber');
+test.set('mayo', 'ivory');
+test.set('1', 'maroon');
+test.set('2', 'lime');
+test.set('3', 'teal');
+test.set('4', 'navy');
+test.set('5', 'cyan');
+test.set('6', 'olive');
+test.set('7', 'coral');
+test.set('8', 'plum');
+test.set('9', 'peach');
+test.set('10', 'mint');
+test.set('11', 'rose');
+test.set('12', 'cream');
+test.set('13', 'charcoal');
+test.set('14', 'bronze');
+test.set('15', 'ruby');
+test.set('16', 'emerald');
+test.set('17', 'sapphire');
+test.set('18', 'jade');
+test.set('19', 'lavender');
+test.set('20', 'indigo');
+test.set('21', 'mahogany');
+
+console.log(test.entries());

@@ -1,19 +1,20 @@
-class HashMap {
-  constructor(capacity = 16, loadFactor = 0.8) {
+export class HashMap {
+  constructor(capacity = 16, loadFactor = 0.75) {
     this.capacity = capacity;
     this.loadFactor = loadFactor;
     this.buckets = 0;
     this.hashTable = [];
   }
-  // Produces a hash key/idx based on user input
+  // Has cypher algorithm
   hash(key) {
    let hashCode = 0;
    if (typeof key !== 'string') {
-    return 'Please enter valid string type key.'
+    throw new TypeError('Key must be a string');
+    return -1;
    }
    const primeNumber = 31;
    for (let i = 0; i < key.length; i++) {
-    hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
+    hashCode = (primeNumber * hashCode + key.charCodeAt(i))  % this.capacity;;;
    }
    return hashCode;
   }
@@ -44,6 +45,15 @@ class HashMap {
     // If loadFactor is exceeded increase capacity by two
     if (this.loadFactor <= this.buckets / this.capacity) {
       this.capacity *= 2;
+
+      // for (let i = 0; i < this.capacity / 2; i++) {
+      //   let current = this.hashTable[i];
+      //   this.hashTable[i] = null;
+      //   while (current !== null & current !== undefined) {
+      //     this.set(current.key, current.value);
+      //     current = current.next;
+      //   }
+      // }
     }
     return this.hashTable;
   }
@@ -156,28 +166,19 @@ class HashMap {
     }
     return container;
   }
+  // Prints entire hash table data
+  entries() {
+    let result = '';
+    for (let i = 0; i < this.capacity; i++) {
+      let current = this.hashTable[i];
+      result += `[${i}] `;
+      while (current !== null && current !== undefined) {
+        result += `[${current.data}] -> `;
+        current = current.next;
+      }
+      result += 'null\n'
+    }
+    return result;
+  }
 }
-
-let testHash = new HashMap();
-
-testHash.set('0', 'Orc');
-testHash.set('1', 'Elf');
-testHash.set('2', 'Human');
-testHash.set('3', 'Dwarf');
-testHash.set('4', 'Goblin');
-testHash.set('5', 'Troll');
-testHash.set('6', 'Vampire');
-testHash.set('7', 'Werewolf');
-testHash.set('8', 'Gnome');
-testHash.set('9', 'Fairy');
-
-testHash.clear();
-
-testHash.set('5', 'Troll');
-testHash.set('6', 'Vampire');
-testHash.set('7', 'Werewolf');
-testHash.set('8', 'Gnome');
-testHash.set('9', 'Fairy');
-
-console.log(testHash.hashTable);
 
