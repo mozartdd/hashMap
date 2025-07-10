@@ -5,16 +5,19 @@ export class HashMap {
     this.loadFactor = loadFactor;
     this.buckets = 0;
     this.hashTable = [];
-    this.testArray = [];
+    this.tempArray = [];
   }
+  // Repopulates all current hash nodes so they take space in new larger array
   #rePopulate() {
     for (let i = 0; i < this.capacity / 2; i++) {
       let curr = this.hashTable[i];
+      // If i won't decrement buckets they will be incremented each set function call
+      // and load factor would be reached before rePopulate function finish it's work
       if (curr !== undefined) {
         this.buckets--;
       }
       while (curr !== null & curr !== undefined) {
-        this.set(curr.key, curr.data, this.testArray);
+        this.set(curr.key, curr.data, this.tempArray);
         curr = curr.next;
       }
     }
@@ -60,8 +63,8 @@ export class HashMap {
       this.capacity *= 2;
       this.#rePopulate();
 
-      this.hashTable = this.testArray;
-      this.testArray = [];
+      this.hashTable = this.tempArray;
+      this.tempArray = [];
     }
     return arr;
   }
