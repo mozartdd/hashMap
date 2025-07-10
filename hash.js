@@ -5,13 +5,25 @@ export class HashMap {
     this.loadFactor = loadFactor;
     this.buckets = 0;
     this.hashTable = [];
+    this.testArray = [];
+  }
+  #rePopulate() {
+    for (let i = 0; i < this.capacity / 2; i++) {
+      let curr = this.hashTable[i];
+      if (curr !== undefined) {
+        this.buckets--;
+      }
+      while (curr !== null & curr !== undefined) {
+        this.set(curr.key, curr.data, this.testArray);
+        curr = curr.next;
+      }
+    }
   }
   // Has cypher algorithm
   hash(key) {
    let hashCode = 0;
    if (typeof key !== 'string') {
     throw new TypeError('Key must be a string');
-    return -1;
    }
    const primeNumber = 31;
    for (let i = 0; i < key.length; i++) {
@@ -20,15 +32,15 @@ export class HashMap {
    return hashCode;
   }
   // Adds key: value pair to hash table, at appropriate bucket idx
-  set(key, value) {
+  set(key, value, arr = this.hashTable) {
     // Turns user input to valid hash table idx
     let idx = this.hash(key);
-    let current = this.hashTable[idx];
+    let current = arr[idx];
 
     if (typeof key !== 'string') {
       return 'Please enter valid string type key.';
    }  else if (current === undefined) {
-      this.hashTable[idx] = {key: key, data: value, next: null};
+      arr[idx] = {key: key, data: value, next: null};
       // Increase filled bucket count
       this.buckets++;
     } else { // If hash table bucket is not empty
@@ -46,17 +58,12 @@ export class HashMap {
     // If loadFactor is exceeded increase capacity by two
     if (this.loadFactor <= this.buckets / this.capacity) {
       this.capacity *= 2;
+      this.#rePopulate();
 
-      // for (let i = 0; i < this.capacity / 2; i++) {
-      //   let current = this.hashTable[i];
-      //   this.hashTable[i] = null;
-      //   while (current !== null & current !== undefined) {
-      //     this.set(current.key, current.value);
-      //     current = current.next;
-      //   }
-      // }
+      this.hashTable = this.testArray;
+      this.testArray = [];
     }
-    return this.hashTable;
+    return arr;
   }
   // Returns value assigned to key
   get(key) {
