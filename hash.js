@@ -11,18 +11,13 @@ export class HashMap {
   #rePopulate() {
     for (let i = 0; i < this.capacity / 2; i++) {
       let curr = this.hashTable[i];
-      // If i won't decrement buckets they will be incremented each set function call
-      // and load factor would be reached before rePopulate function finish it's work
-      if (curr !== undefined) {
-        this.buckets--;
-      }
       while (curr !== null & curr !== undefined) {
-        this.set(curr.key, curr.data, this.tempArray);
+        this.#setWithoutBucketIncr(curr.key, curr.data, this.tempArray);
         curr = curr.next;
       }
     }
   }
-  // Has cypher algorithm
+  // Hash cypher algorithm
   hash(key) {
    let hashCode = 0;
    if (typeof key !== 'string') {
@@ -34,7 +29,31 @@ export class HashMap {
    }
    return hashCode;
   }
-  // Adds key: value pair to hash table, at appropriate bucket idx
+  // Adds key value pair to hash table, at appropriate bucket, but without incrementing bucket count
+  #setWithoutBucketIncr(key, value, arr = this.tempArray) {
+    // Turns user input to valid hash table idx
+    let idx = this.hash(key);
+    let current = arr[idx];
+
+    if (typeof key !== 'string') {
+      return 'Please enter valid string type key.';
+   }  else if (current === undefined) {
+      arr[idx] = {key: key, data: value, next: null};
+    } else { // If hash table bucket is not empty
+
+      while (current !== null) {
+        if (current.key === key) {
+          current.data = value;
+        } else if (current.next === null) { // If next link is last
+          // Set lists head to be current variable and set it's pointer to current list's head
+          current.next = {key: key, data: value, next: null};
+        }
+        current = current.next;
+      }
+    }
+    return arr;
+  }
+  // Adds key value pair to hash table, at appropriate bucket idx
   set(key, value, arr = this.hashTable) {
     // Turns user input to valid hash table idx
     let idx = this.hash(key);
@@ -192,4 +211,3 @@ export class HashMap {
     return result;
   }
 }
-
